@@ -86,7 +86,7 @@ function scrapeParcel({ cookie }) {
           scrapeKeywords.some((keyword) => data.title.toLowerCase().includes(keyword)) ?
             parcelRelatedPosts.push({
               title: data.title.replace(/\r?\n|\r|\t/g, ' '),
-              content: data.content && data.content.replace(/\r?\n|\r|\t/g, ' ').replace(/\s\s+/g, '  ')
+              content: data.content && data.content.replace(/\r?\n|\r|\t/g, ' ').replace(/\s{2}/g, ' ').replace(/\s\s+/g, '  ')
             }) :
             null
         })
@@ -104,6 +104,7 @@ function scrapeParcel({ cookie }) {
 }
 
 function processContent({ content, ignoreBill = false }) {
+  if (!content) return []
   const contentArr = content.split(' ')
   const parcelArr = contentArr.splice(contentArr.indexOf(contentDetectDelimiter) + 1, contentArr.length)
   if (!parcelArr[0]) {
@@ -118,6 +119,7 @@ function processContent({ content, ignoreBill = false }) {
     parcel: '',
     qty: '',
   }
+  console.log(parcelArr)
   parcelArr.forEach(item => {
     if (item === '') {
       switch (expected) {
@@ -164,6 +166,7 @@ function processContent({ content, ignoreBill = false }) {
       }
     }
   })
+  console.log(resultsArr)
   return resultsArr
 
 }
