@@ -13,6 +13,12 @@ module.exports = {
       return rows[0].max
     }
   },
+  async list() {
+    const { rows } = await db.query(sql`
+    SELECT * from parcels
+    `)
+    return rows
+  },
   async create({ bil, name, parcel, qty, date }) {
     try {
 
