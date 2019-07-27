@@ -9,6 +9,7 @@ module.exports.up = async function (next) {
     name text,
     email text,
     fcm text,
+    notified boolean,
     created_at timestamp,
     updated_at timestamp
     );
