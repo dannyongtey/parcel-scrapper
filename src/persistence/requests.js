@@ -3,15 +3,12 @@ const uuid = require('uuid/v4');
 const db = require('./db');
 
 module.exports = {
-  async latestDateInRecord() {
+  async listNotNotified() {
     const { rows } = await db.query(sql`
-    SELECT MAX(date) from parcels
+    SELECT * from requests
+    WHERE notified=false
     `)
-    if (!rows[0].max) {
-      return '1 Jan 1999'
-    } else {
-      return rows[0].max
-    }
+    return rows
   },
   async create({ bil, name, parcel, qty, date }) {
     try {
