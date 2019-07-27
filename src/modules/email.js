@@ -1,6 +1,6 @@
 const mailer = require('nodemailer')
 
-const {SMTP_SERVER, SMTP_USERNAME, SMTP_PASSWORD, SMTP_PORT} = process.env
+const {SMTP_SERVER, SMTP_USERNAME, SMTP_PASSWORD, SMTP_PORT, NODE_ENV} = process.env
 const transporter = mailer.createTransport({
   host: SMTP_SERVER,
   port: SMTP_PORT,
@@ -26,7 +26,7 @@ module.exports = {
   async sendMailTo({to, subject, text, html}){
     const info = await transporter.sendMail({
       from: `${SMTP_USERNAME}`,
-      to,
+      to: NODE_ENV === 'development'? 'dannyongtey@gmail.com' : to,
       subject,
       text,
       html
