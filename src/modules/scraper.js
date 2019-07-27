@@ -103,6 +103,13 @@ function scrapeParcel({ cookie }) {
   })
 }
 
+function getDateFrom({title}){
+  if(!title) return null
+  const stringWithDate = title.split('     ')[1]
+  const date = stringWithDate.split('|')[0]
+  return date
+}
+
 function processContent({ content, ignoreBill = false }) {
   if (!content) return []
   const contentArr = content.split(' ')
@@ -119,7 +126,6 @@ function processContent({ content, ignoreBill = false }) {
     parcel: '',
     qty: '',
   }
-  console.log(parcelArr)
   parcelArr.forEach(item => {
     if (item === '') {
       switch (expected) {
@@ -147,7 +153,6 @@ function processContent({ content, ignoreBill = false }) {
           }
           break
         case flow.NAME:
-          console.log(item)
           parcelObj.name += `${item} `
           break
         case flow.PARCEL:
@@ -166,7 +171,6 @@ function processContent({ content, ignoreBill = false }) {
       }
     }
   })
-  console.log(resultsArr)
   return resultsArr
 
 }
@@ -174,5 +178,6 @@ function processContent({ content, ignoreBill = false }) {
 module.exports = {
   loginOsmosis,
   scrapeParcel,
-  processContent
+  processContent,
+  getDateFrom
 }
