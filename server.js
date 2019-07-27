@@ -9,6 +9,8 @@ const {SESSION_SECRET} = require('./config');
 const app = express();
 const api = require('./src/api');
 
+const {runSchedule} = require('./src/scheduler')
+
 app.get('/', (req, res) => res.sendStatus(200));
 app.get('/health', (req, res) => res.sendStatus(200));
 
@@ -24,6 +26,9 @@ app.use(
 app.use(helmet());
 
 app.use(api);
+
+// Run scheduler
+runSchedule()
 
 let server;
 module.exports = {
