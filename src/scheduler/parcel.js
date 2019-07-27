@@ -18,6 +18,7 @@ module.exports = {
             if (date > lastRecordedDate) {
               requestList.forEach(request => {
                 const parcelName = filteredResult.name.toLowerCase().replace(/\s/g, '')
+                const requestID = request.id
                 const searchName = request.name.toLowerCase().replace(/\s/g, '')
                 if (parcelName.includes(searchName)) {
                   sendReceivedEmailTo({
@@ -26,6 +27,7 @@ module.exports = {
                     parcel: filteredResult.parcel,
                     qty: filteredResult.qty,
                   })
+                  Request.updateNotified({id: requestID})
                 }
               })
               Parcel.create({

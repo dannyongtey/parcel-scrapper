@@ -27,6 +27,14 @@ module.exports = {
       throw error;
     }
   },
+  async updateNotified({id}){
+    const { rows } = await db.query(sql`
+      UPDATE requests
+      SET notified=true
+      WHERE id=${id}
+      `);
+    return rows
+  },
   async find({ bil, name, parcel, qty, date }) {
     const { rows } = await db.query(sql`
     SELECT * FROM parcels
