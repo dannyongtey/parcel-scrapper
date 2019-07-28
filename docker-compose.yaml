@@ -7,7 +7,7 @@ services:
       - postgres
     environment:
       DATABASE_URL: postgres://user:pass@postgres:5432/db
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 443
       STUDENT_ID: ${STUDENT_ID}
       STUDENT_PASSWORD: ${STUDENT_PASSWORD}
