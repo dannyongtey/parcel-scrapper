@@ -51,7 +51,7 @@ module.exports = {
     const rows = await db.query(sql`
       UPDATE students
       SET ban=true
-      WHERE id=${student_id}
+      WHERE student_id=${student_id}
       `);
     return rows
   },
@@ -60,7 +60,7 @@ module.exports = {
     const rows = await db.query(sql`
       UPDATE students
       SET ban=false
-      WHERE id=${student_id}
+      WHERE student_id=${student_id}
       `);
     return rows
   }
