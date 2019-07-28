@@ -16,6 +16,7 @@ services:
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_PORT: ${SMTP_PORT}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      ADMIN_TOKEN: ${ADMIN_TOKEN}
     ports:
       - "3000:3000"
     command: bash -c "npm install && npm run dev"

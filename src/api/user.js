@@ -1,28 +1,37 @@
 const {Router} = require('express');
-const User = require('../persistence/students');
+const Student = require('../persistence/students');
 
 const router = new Router();
 
-router.post('/', async (req, res) => {
+router.get('/ban', async (req, res) => {
   try {
-    const {email, password} = req.body;
-    if (!email || !password) {
-      return res
-        .status(400)
-        .json({message: 'email and password must be provided'});
+    const {student_id, token} = req.query
+    if (token === process.env.ADMIN_TOKEN){
+      result = await Student.ban(student_id)
+      return res.status(200).json(result)
+    } else {
+      throw Error()
     }
+  } catch (err){
+    res.status(500).json({
+      error: 'Unknown error'
+    })
+  }
+});
 
-    const user = await User.create(email, password);
-    if (!user) {
-      return res.status(400).json({message: 'User already exists'});
+router.get('/unban', async (req, res) => {
+  try {
+    const {student_id, token} = req.query
+    if (token === process.env.ADMIN_TOKEN){
+      result = await Student.unban(student_id)
+      res.status(200).json(result)
+    } else {
+      throw Error()
     }
-
-    return res.status(200).json(user);
-  } catch (error) {
-    console.error(
-      `createUser({ email: ${req.body.email} }) >> Error: ${error.stack}`
-    );
-    res.status(500).json();
+  } catch (err){
+    res.status(500).json({
+      error: 'Unknown error'
+    })
   }
 });
 

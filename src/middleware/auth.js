@@ -23,7 +23,7 @@ module.exports = {
         req.data = {}
         req.data.googleAuth = payload
 
-        const studentID = payload['hd'].split('@')[0]
+        const studentID = payload['email'].split('@')[0]
         let studentResult = await Student.find(studentID)
         if (!studentResult) {
           studentResult = await Student.create({
@@ -32,6 +32,20 @@ module.exports = {
           })
         }
         req.data.student = studentResult
+        if (studentResult.ban) {
+          return res.status(403).json({
+            error: `
+          Your account has been banned permanently due to abuse.
+          Please contact the admin to have your account unbanned.
+          `})
+        } else if (studentResult.hold) {
+          return res.status(403).json({
+            error: `
+          Your account has been placed on hold due to suspicious activity.
+          Don't worry, an admin will review your account in a moment.
+          Check back later.
+          `})
+        }
         if (payload['hd'] !== 'student.mmu.edu.my') {
           res.status(401).json({ error: 'Unauthorized. Please use MMU student email to login.' })
           return
