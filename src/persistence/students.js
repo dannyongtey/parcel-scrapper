@@ -29,11 +29,29 @@ module.exports = {
     return rows[0];
   },
 
+  async hold(student_id) {
+    const rows = await db.query(sql`
+      UPDATE students
+      SET hold=true
+      WHERE id=${student_id}
+      `);
+    return rows
+  },
+
+  async unhold(student_id) {
+    const rows = await db.query(sql`
+      UPDATE students
+      SET hold=false
+      WHERE id=${student_id}
+      `);
+    return rows
+  },
+
   async ban(student_id) {
     const rows = await db.query(sql`
       UPDATE students
       SET ban=true
-      WHERE student_id=${student_id}
+      WHERE id=${student_id}
       `);
     return rows
   },
@@ -42,7 +60,7 @@ module.exports = {
     const rows = await db.query(sql`
       UPDATE students
       SET ban=false
-      WHERE student_id=${student_id}
+      WHERE id=${student_id}
       `);
     return rows
   }

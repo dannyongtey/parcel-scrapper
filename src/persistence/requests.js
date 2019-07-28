@@ -27,7 +27,7 @@ module.exports = {
       throw error;
     }
   },
-  async updateNotified({id}){
+  async updateNotified({ id }) {
     const { rows } = await db.query(sql`
       UPDATE requests
       SET notified=true
@@ -35,6 +35,17 @@ module.exports = {
       `);
     return rows
   },
+
+  async requestsOfSameDay({ student_id }) {
+    const { rows } = await db.query(sql`
+    SELECT * FROM requests
+    WHERE student_primary=${student_id} AND
+    DATE(created_at)=current_date
+    ;
+    `);
+    return rows
+  },
+
   async find({ bil, name, parcel, qty, date }) {
     const { rows } = await db.query(sql`
     SELECT * FROM parcels

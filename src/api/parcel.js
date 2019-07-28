@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const Request = require('../persistence/requests')
 const Parcel = require('../persistence/parcels')
+const Student = require('../persistence/students')
 
 
 const router = new Router();
@@ -20,7 +21,6 @@ router.post('/request', async (req, res) => {
   try {
     const { body: { name, email, fcm } } = req
     const { student } = req.data
-    console.log(student)
     if (!name) {
       return res.status(422).json({
         error: "Name should not be empty."
@@ -32,12 +32,20 @@ router.post('/request', async (req, res) => {
         error: "Please enter a valid email."
       })
     }
+    const requestOfSameDay = await Request.requestsOfSameDay({ student_id: student.id })
+
+    if (requestOfSameDay.length >= 10) {
+      Student.hold(student.id)
+    }
+
     const request = await Request.create({
       name,
       email,
       fcm,
       student_primary: student.id,
     })
+
+
     res.status(200).json(request)
   } catch (error) {
     console.error(error)

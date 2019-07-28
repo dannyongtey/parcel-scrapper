@@ -1,5 +1,6 @@
 const { OAuth2Client } = require('google-auth-library')
 const Student = require('../persistence/students')
+const Request = require('../persistence/requests')
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
@@ -31,6 +32,13 @@ module.exports = {
             student_id: studentID,
           })
         }
+        const requestOfSameDay = await Request.requestsOfSameDay({ student_id: studentResult.id })
+        if (requestOfSameDay.length < 10) {
+          await Student.unhold(studentResult.id)
+        }
+
+        studentResult = await Student.find(studentID)
+
         req.data.student = studentResult
         if (studentResult.ban) {
           return res.status(403).json({
@@ -52,7 +60,8 @@ module.exports = {
         } else {
           next()
         }
-      } catch {
+      } catch(error) {
+        console.log(error)
         res.status(401).json({ error: 'Unauthorized. Please ensure you are logged in using official MMU Account.' })
         return
       }
