@@ -17,7 +17,18 @@ router.get('/', async (req, res) => {
 
 router.post('/request', async (req, res) => {
   try {
-    const {body: {name, email, fcm}} = req
+    const { body: { name, email, fcm } } = req
+    if (!name) {
+      return res.status(422).json({
+        error: "Name should not be empty."
+      });
+    }
+    const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    if (!emailRegex.test(email.toLowerCase())){
+      return res.status(422).json({
+        error: "Please enter a valid email."
+      })
+    }
     const request = await Request.create({
       name,
       email,
