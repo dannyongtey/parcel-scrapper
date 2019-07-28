@@ -1,5 +1,5 @@
 const {Router} = require('express');
-const User = require('../persistence/users');
+const User = require('../persistence/students');
 
 const router = new Router();
 

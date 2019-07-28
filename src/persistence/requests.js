@@ -10,11 +10,11 @@ module.exports = {
     `)
     return rows
   },
-  async create({ name, email, fcm }) {
+  async create({ name, email, fcm, student_primary }) {
     try {
       const { rows } = await db.query(sql`
-      INSERT INTO requests (id, name, email, fcm, notified, created_at, updated_at)
-        VALUES (${uuid()}, ${name}, ${email}, ${fcm}, ${false}, ${new Date()}, ${new Date()})
+      INSERT INTO requests (id, name, email, fcm, notified, student_primary, created_at, updated_at)
+        VALUES (${uuid()}, ${name}, ${email}, ${fcm}, ${false}, ${student_primary}, ${new Date()}, ${new Date()})
         RETURNING id;
       `);
 

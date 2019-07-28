@@ -1,20 +1,18 @@
 const sql = require('sql-template-strings');
 const uuid = require('uuid/v4');
-const bcrypt = require('bcrypt');
 const db = require('./db');
 
 module.exports = {
-  async create(email, password) {
+  async create({name, student_id}) {
     try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-
       const {rows} = await db.query(sql`
-      INSERT INTO users (id, email, password)
-        VALUES (${uuid()}, ${email}, ${hashedPassword})
-        RETURNING id, email;
+      INSERT INTO students (id, name, student_id, ban, hold, created_at, updated_at)
+        VALUES (${uuid()}, ${name}, ${student_id}, ${false}, ${false}, ${new Date()}, ${new Date()})
+        RETURNING id;
       `);
 
       const [user] = rows;
+      console.log(user)
       return user;
     } catch (error) {
       if (error.constraint === 'users_email_key') {
@@ -24,9 +22,9 @@ module.exports = {
       throw error;
     }
   },
-  async find(email) {
+  async find(student_id) {
     const {rows} = await db.query(sql`
-    SELECT * FROM users WHERE email=${email} LIMIT 1;
+    SELECT * FROM students WHERE student_id=${student_id} LIMIT 1;
     `);
     return rows[0];
   }

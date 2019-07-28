@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const bcrypt = require('bcrypt');
 
-const User = require('../persistence/users');
+const User = require('../persistence/students');
 const Session = require('../persistence/sessions');
 
 const sessionMiddleware = require('../middleware/session-middleware');
