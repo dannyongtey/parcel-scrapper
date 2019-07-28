@@ -6,7 +6,7 @@ const Student = require('../persistence/students')
 
 const router = new Router();
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const parcels = await Parcel.list()
     res.status(200).json(parcels)
