@@ -6,6 +6,11 @@ const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 module.exports = {
   async authMiddleware(req, res, next) {
     if (req.method !== 'OPTIONS') {
+      if(!req.header('authorization')){
+        return res.status(401).json({
+          error: 'Unauthorized'
+        })
+      }
       const authHeader = JSON.parse(req.header('authorization').split('Bearer ')[1])
       const { tokenId } = authHeader
       try {
