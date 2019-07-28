@@ -2,7 +2,10 @@ const { loginOsmosis, scrapeParcel, processContent, getDateFrom } = require('../
 const Parcel = require('../persistence/parcels');
 const Request = require('../persistence/requests')
 const { sendReceivedEmailTo } = require('../modules/email')
+const FCM = require('fcm-node')
+const privateKey = require('./private-key.json')
 
+const fcm = new FCM(privateKey)
 module.exports = {
   async checkParcel() {
     const parcelLists = []
@@ -21,13 +24,27 @@ module.exports = {
                 const requestID = request.id
                 const searchName = request.name.toLowerCase().replace(/\s/g, '')
                 if (parcelName.includes(searchName)) {
+                  if (request.fcm) {
+                    const message = {
+                      to: request.fcm,
+                      notification: {
+                        title: "Parcel Received! - Parcel Track V2",
+                        body: `Hi there! A parcel named ${filteredResult.name} type ${filteredResult.parcel} quantity ${filteredResult.qty} has been received.`
+                      }
+                    }
+
+                    fcm.send(message, function(err, res){
+                      console.log('error: ', err, 'response: ',res)
+                    })
+                  }
+
                   sendReceivedEmailTo({
                     email: request.email,
                     name: filteredResult.name,
                     parcel: filteredResult.parcel,
                     qty: filteredResult.qty,
                   })
-                  Request.updateNotified({id: requestID})
+                  Request.updateNotified({ id: requestID })
                 }
               })
               Parcel.create({

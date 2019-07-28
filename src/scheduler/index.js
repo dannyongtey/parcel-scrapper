@@ -1,7 +1,7 @@
 const schedule = require('node-schedule')
 const {checkParcel} = require('./parcel')
 
-const checkTime = process.env.NODE_ENV === 'development' ? '*/10 * * * *' : '*/1 * * 1-5'
+const checkTime = process.env.NODE_ENV === 'development' ? '*/1 * * * *' : '*/1 * * 1-5'
 
 module.exports = {
   runSchedule() {

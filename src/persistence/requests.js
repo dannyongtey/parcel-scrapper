@@ -13,8 +13,8 @@ module.exports = {
   async create({ name, email, fcm }) {
     try {
       const { rows } = await db.query(sql`
-      INSERT INTO requests (id, name, email, fcm, created_at, updated_at)
-        VALUES (${uuid()}, ${name}, ${email}, ${fcm}, ${new Date()}, ${new Date()})
+      INSERT INTO requests (id, name, email, fcm, notified, created_at, updated_at)
+        VALUES (${uuid()}, ${name}, ${email}, ${fcm}, ${false}, ${new Date()}, ${new Date()})
         RETURNING id;
       `);
 

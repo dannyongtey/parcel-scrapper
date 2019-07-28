@@ -23,6 +23,7 @@
     "bcrypt": "^3.0.6",
     "client-sessions": "^0.8.0",
     "express": "^4.16.4",
+    "fcm-node": "^1.5.1",
     "google-auth-library": "^5.1.0",
     "helmet": "^3.16.0",
     "migrate": "^1.6.2",
