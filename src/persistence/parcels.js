@@ -15,7 +15,7 @@ module.exports = {
   },
   async list() {
     const { rows } = await db.query(sql`
-    SELECT * from parcels
+    SELECT * from parcels ORDER BY date DESC
     `)
     return rows
   },

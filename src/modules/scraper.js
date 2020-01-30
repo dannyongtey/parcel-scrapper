@@ -1,7 +1,7 @@
 const osmosis = require('osmosis')
 
 // Important params
-const scrapeKeywords = ['parcel']
+const scrapeKeywords = ['parcel', 'postage']
 const contentDetectDelimiter = 'QTY'
 const flow = {
   BIL: 'BIL',

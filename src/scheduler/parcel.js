@@ -28,6 +28,7 @@ module.exports = {
                     const message = {
                       to: request.fcm,
                       notification: {
+                        sound: "default",
                         title: "Parcel Received! - Parcel Track V2",
                         body: `Hi there! A parcel named ${filteredResult.name} type ${filteredResult.parcel} quantity ${filteredResult.qty} has been received.`
                       }
